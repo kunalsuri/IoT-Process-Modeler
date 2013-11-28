@@ -1,0 +1,402 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=UTF-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**
+<span class='line'>  2</span>  * Copyright (c) 2006
+<span class='line'>  3</span>  * Martin Czuchra, Nicolas Peters, Daniel Polak, Willi Tscheschner
+<span class='line'>  4</span>  *
+<span class='line'>  5</span>  * Permission is hereby granted, free of charge, to any person obtaining a
+<span class='line'>  6</span>  * copy of this software and associated documentation files (the "Software"),
+<span class='line'>  7</span>  * to deal in the Software without restriction, including without limitation
+<span class='line'>  8</span>  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+<span class='line'>  9</span>  * and/or sell copies of the Software, and to permit persons to whom the
+<span class='line'> 10</span>  * Software is furnished to do so, subject to the following conditions:
+<span class='line'> 11</span>  *
+<span class='line'> 12</span>  * The above copyright notice and this permission notice shall be included in
+<span class='line'> 13</span>  * all copies or substantial portions of the Software.
+<span class='line'> 14</span>  *
+<span class='line'> 15</span>  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<span class='line'> 16</span>  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+<span class='line'> 17</span>  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+<span class='line'> 18</span>  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+<span class='line'> 19</span>  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+<span class='line'> 20</span>  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+<span class='line'> 21</span>  * DEALINGS IN THE SOFTWARE.
+<span class='line'> 22</span>  **/</span><span class="WHIT">
+<span class='line'> 23</span> 
+<span class='line'> 24</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">printf</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 26</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">	</span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">=</span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">&lt;</span><span class="NAME">arguments.length</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="PUNC">++</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">		</span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">result.replace</span><span class="PUNC">(</span><span class="STRN">'%'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">-</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">[</span><span class="NAME">i</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">result</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 31</span> 
+<span class='line'> 32</span> </span><span class="COMM">// oryx constants.</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_TRACE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">5</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_DEBUG</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">4</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_INFO</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_WARN</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_ERROR</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_FATAL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_CONFIGURATION_DELAY</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">100</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX_CONFIGURATION_WAIT_ATTEMPTS</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">10</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> 
+<span class='line'> 43</span> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">ORYX</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">ORYX</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> 
+<span class='line'> 45</span> </span><span class="NAME">ORYX</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Object.extend</span><span class="PUNC">(</span><span class="NAME">ORYX</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 46</span> 
+<span class='line'> 47</span> </span><span class="WHIT">	</span><span class="COMM">//set the path in the config.js file!!!!</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">	</span><span class="NAME">PATH</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">ORYX.CONFIG.ROOT_PATH</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">	</span><span class="COMM">//CONFIGURATION: "config.js",</span><span class="WHIT">
+<span class='line'> 50</span> 
+<span class='line'> 51</span> </span><span class="WHIT">	</span><span class="NAME">URLS</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">		</span><span class="COMM">/*
+<span class='line'> 54</span> 		 * No longer needed, since compiled into one source file that
+<span class='line'> 55</span> 		 * contains all of this files concatenated in the exact order
+<span class='line'> 56</span> 		 * as defined in build.xml.
+<span class='line'> 57</span> 		 */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="COMM">/*
+<span class='line'> 60</span> 		"scripts/Core/SVG/editpathhandler.js",
+<span class='line'> 61</span> 		"scripts/Core/SVG/minmaxpathhandler.js",
+<span class='line'> 62</span> 		"scripts/Core/SVG/pointspathhandler.js",
+<span class='line'> 63</span> 		"scripts/Core/SVG/svgmarker.js",
+<span class='line'> 64</span> 		"scripts/Core/SVG/svgshape.js",
+<span class='line'> 65</span> 		"scripts/Core/SVG/label.js",
+<span class='line'> 66</span> 		"scripts/Core/Math/math.js",		
+<span class='line'> 67</span> 		"scripts/Core/StencilSet/stencil.js",
+<span class='line'> 68</span> 		"scripts/Core/StencilSet/property.js",
+<span class='line'> 69</span> 		"scripts/Core/StencilSet/propertyitem.js",
+<span class='line'> 70</span> 		"scripts/Core/StencilSet/rules.js",
+<span class='line'> 71</span> 		"scripts/Core/StencilSet/stencilset.js",
+<span class='line'> 72</span> 		"scripts/Core/StencilSet/stencilsets.js",
+<span class='line'> 73</span> 		"scripts/Core/bounds.js",
+<span class='line'> 74</span> 		"scripts/Core/uiobject.js",
+<span class='line'> 75</span> 		"scripts/Core/abstractshape.js",
+<span class='line'> 76</span> 		"scripts/Core/canvas.js",
+<span class='line'> 77</span> 		"scripts/Core/main.js",
+<span class='line'> 78</span> 		"scripts/Core/svgDrag.js",
+<span class='line'> 79</span> 		"scripts/Core/shape.js",
+<span class='line'> 80</span> 		"scripts/Core/Controls/control.js",
+<span class='line'> 81</span> 		"scripts/Core/Controls/docker.js",
+<span class='line'> 82</span> 		"scripts/Core/Controls/magnet.js",		
+<span class='line'> 83</span> 		"scripts/Core/node.js",
+<span class='line'> 84</span> 		"scripts/Core/edge.js"
+<span class='line'> 85</span> */</span><span class="WHIT">	</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 86</span> 
+<span class='line'> 87</span> </span><span class="WHIT">	</span><span class="NAME">alreadyLoaded</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 88</span> 
+<span class='line'> 89</span> </span><span class="WHIT">	</span><span class="NAME">configrationRetries</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 90</span> 
+<span class='line'> 91</span> </span><span class="WHIT">	</span><span class="NAME">Version</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'0.1.1'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> </span><span class="WHIT">	</span><span class="NAME">availablePlugins</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 94</span> 
+<span class='line'> 95</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 96</span> 	 * The ORYX.Log logger.
+<span class='line'> 97</span> 	 */</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">	</span><span class="NAME">Log</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">		</span><span class="NAME">__appenders</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">			</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">append</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">message</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="WHIT">				</span><span class="NAME">console.log</span><span class="PUNC">(</span><span class="NAME">message</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>103</span> </span><span class="WHIT">		</span><span class="PUNC">]</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">		</span><span class="NAME">trace</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">	</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_TRACE</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'TRACE'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="WHIT">		</span><span class="NAME">debug</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_DEBUG</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>108</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'DEBUG'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">		</span><span class="NAME">info</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_INFO</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'INFO'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">		</span><span class="NAME">warn</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_WARN</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'WARN'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">		</span><span class="NAME">error</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_ERROR</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'ERROR'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">		</span><span class="NAME">fatal</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX_LOGLEVEL</span><span class="WHIT"> </span><span class="PUNC">>=</span><span class="WHIT"> </span><span class="NAME">ORYX_LOGLEVEL_FATAL</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__log</span><span class="PUNC">(</span><span class="STRN">'FATAL'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>118</span> </span><span class="WHIT">		</span><span class="NAME">__log</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prefix</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">messageParts</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>119</span> </span><span class="WHIT">			</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="WHIT">			</span><span class="NAME">messageParts</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" "</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="WHIT">				</span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">prefix</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">messageParts</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>122</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">message</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">printf.apply</span><span class="PUNC">(</span><span class="KEYW">null</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">messageParts</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>123</span> </span><span class="WHIT">			</span><span class="WHIT">
+<span class='line'>124</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__appenders.each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">appender</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="WHIT">				</span><span class="NAME">appender.append</span><span class="PUNC">(</span><span class="NAME">message</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">		</span><span class="NAME">addAppender</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">appender</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.__appenders.push</span><span class="PUNC">(</span><span class="NAME">appender</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>133</span> 
+<span class='line'>134</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>135</span> 	 * First bootstrapping layer. The Oryx loading procedure begins. In this
+<span class='line'>136</span> 	 * step, all preliminaries that are not in the responsibility of Oryx to be
+<span class='line'>137</span> 	 * met have to be checked here, such as the existance of the prototpe
+<span class='line'>138</span> 	 * library in the current execution environment. After that, the second
+<span class='line'>139</span> 	 * bootstrapping layer is being invoked. Failing to ensure that any
+<span class='line'>140</span> 	 * preliminary condition is not met has to fail with an error.
+<span class='line'>141</span> 	 */</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">	</span><span class="NAME">load</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>143</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">ORYX.CONFIG.PREVENT_LOADINGMASK_AT_READY</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">			</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">waitingpanel</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ext.Window</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">renderTo</span><span class="PUNC">:</span><span class="NAME">Ext.getBody</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="NAME">id</span><span class="PUNC">:</span><span class="STRN">'oryx-loading-panel'</span><span class="PUNC">,</span><span class="NAME">bodyStyle</span><span class="PUNC">:</span><span class="STRN">'padding: 8px;background:white'</span><span class="PUNC">,</span><span class="NAME">title</span><span class="PUNC">:</span><span class="NAME">ORYX.I18N.Oryx.title</span><span class="PUNC">,</span><span class="NAME">width</span><span class="PUNC">:</span><span class="STRN">'auto'</span><span class="PUNC">,</span><span class="NAME">height</span><span class="PUNC">:</span><span class="STRN">'auto'</span><span class="PUNC">,</span><span class="NAME">modal</span><span class="PUNC">:</span><span class="KEYW">true</span><span class="PUNC">,</span><span class="NAME">resizable</span><span class="PUNC">:</span><span class="KEYW">false</span><span class="PUNC">,</span><span class="NAME">closable</span><span class="PUNC">:</span><span class="KEYW">false</span><span class="PUNC">,</span><span class="NAME">html</span><span class="PUNC">:</span><span class="STRN">'&lt;span style="font-size:11px;">'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">ORYX.I18N.Oryx.pleaseWait</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">'&lt;/span>'</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">			</span><span class="NAME">waitingpanel.show</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">		</span><span class="NAME">ORYX.Log.debug</span><span class="PUNC">(</span><span class="STRN">"Oryx begins loading procedure."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">		</span><span class="COMM">// check for prototype</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">Prototype</span><span class="PUNC">==</span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">			</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">Element</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">			</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">Element.Methods</span><span class="PUNC">==</span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">			</span><span class="NAME">parseFloat</span><span class="PUNC">(</span><span class="NAME">Prototype.Version.split</span><span class="PUNC">(</span><span class="STRN">"."</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">"."</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">				</span><span class="NAME">Prototype.Version.split</span><span class="PUNC">(</span><span class="STRN">"."</span><span class="PUNC">)</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">&lt;</span><span class="WHIT"> </span><span class="NUMB">1.5</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>157</span> 
+<span class='line'>158</span> </span><span class="WHIT">			</span><span class="KEYW">throw</span><span class="PUNC">(</span><span class="STRN">"Application requires the Prototype JavaScript framework >= 1.5.3"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="WHIT">		</span><span class="NAME">ORYX.Log.debug</span><span class="PUNC">(</span><span class="STRN">"Prototype > 1.5 found."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>161</span> 
+<span class='line'>162</span> </span><span class="WHIT">		</span><span class="COMM">// continue loading.</span><span class="WHIT">
+<span class='line'>163</span> </span><span class="WHIT">		</span><span class="NAME">ORYX._load</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>164</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>165</span> 
+<span class='line'>166</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>167</span> 	 * Second bootstrapping layer. The oryx configuration is checked. When not
+<span class='line'>168</span> 	 * yet loaded, config.js is being requested from the server. A repeated
+<span class='line'>169</span> 	 * error in retrieving the configuration will result in an error to be
+<span class='line'>170</span> 	 * thrown after a certain time of retries. Once the configuration is there,
+<span class='line'>171</span> 	 * all urls that are registered with oryx loading are being requested from
+<span class='line'>172</span> 	 * the server. Once everything is loaded, the third layer is being invoked.
+<span class='line'>173</span> 	 */</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="WHIT">	</span><span class="NAME">_load</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="WHIT">	</span><span class="COMM">/*
+<span class='line'>176</span> 		// if configuration not there already,
+<span class='line'>177</span> 		if(!(ORYX.CONFIG)) {
+<span class='line'>178</span> 			
+<span class='line'>179</span> 			// if this is the first attempt...
+<span class='line'>180</span> 			if(ORYX.configrationRetries == 0) {
+<span class='line'>181</span> 				
+<span class='line'>182</span> 				// get the path and filename.
+<span class='line'>183</span> 				var configuration = ORYX.PATH + ORYX.CONFIGURATION;
+<span class='line'>184</span> 	
+<span class='line'>185</span> 				ORYX.Log.debug("Configuration not found, loading from '%0'.",
+<span class='line'>186</span> 					configuration);
+<span class='line'>187</span> 				
+<span class='line'>188</span> 				// require configuration file.
+<span class='line'>189</span> 				Kickstart.require(configuration);
+<span class='line'>190</span> 				
+<span class='line'>191</span> 			// else if attempts exceeded ...
+<span class='line'>192</span> 			} else if(ORYX.configrationRetries >= ORYX_CONFIGURATION_WAIT_ATTEMPTS) {
+<span class='line'>193</span> 				
+<span class='line'>194</span> 				throw "Tried to get configuration" +
+<span class='line'>195</span> 					ORYX_CONFIGURATION_WAIT_ATTEMPTS +
+<span class='line'>196</span> 					" times from '" + configuration + "'. Giving up."
+<span class='line'>197</span> 					
+<span class='line'>198</span> 			} else if(ORYX.configrationRetries > 0){
+<span class='line'>199</span> 				
+<span class='line'>200</span> 				// point out how many attempts are left...
+<span class='line'>201</span> 				ORYX.Log.debug("Waiting once more (%0 attempts left)",
+<span class='line'>202</span> 					(ORYX_CONFIGURATION_WAIT_ATTEMPTS -
+<span class='line'>203</span> 						ORYX.configrationRetries));
+<span class='line'>204</span> 
+<span class='line'>205</span> 			}
+<span class='line'>206</span> 			
+<span class='line'>207</span> 			// any case: continue in a moment with increased retry count.
+<span class='line'>208</span> 			ORYX.configrationRetries++;
+<span class='line'>209</span> 			window.setTimeout(ORYX._load, ORYX_CONFIGURATION_DELAY);
+<span class='line'>210</span> 			return;
+<span class='line'>211</span> 		}
+<span class='line'>212</span> 		
+<span class='line'>213</span> 		ORYX.Log.info("Configuration loaded.");
+<span class='line'>214</span> 		
+<span class='line'>215</span> 		// load necessary scripts.
+<span class='line'>216</span> 		ORYX.URLS.each(function(url) {
+<span class='line'>217</span> 			ORYX.Log.debug("Requireing '%0'", url);
+<span class='line'>218</span> 			Kickstart.require(ORYX.PATH + url) });
+<span class='line'>219</span> 	*/</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="WHIT">		</span><span class="COMM">// configurate logging and load plugins.</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="WHIT">		</span><span class="NAME">ORYX.loadPlugins</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>223</span> 
+<span class='line'>224</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'>225</span> 	 * Third bootstrapping layer. This is where first the plugin coniguration
+<span class='line'>226</span> 	 * file is loaded into oryx, analyzed, and where all plugins are being
+<span class='line'>227</span> 	 * requested by the server. Afterwards, all editor instances will be
+<span class='line'>228</span> 	 * initialized.
+<span class='line'>229</span> 	 */</span><span class="WHIT">
+<span class='line'>230</span> </span><span class="WHIT">	</span><span class="NAME">loadPlugins</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>231</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>232</span> </span><span class="WHIT">		</span><span class="COMM">// load plugins if enabled.</span><span class="WHIT">
+<span class='line'>233</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">ORYX.CONFIG.PLUGINS_ENABLED</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="WHIT">			</span><span class="NAME">ORYX._loadPlugins</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">		</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">			</span><span class="NAME">ORYX.Log.warn</span><span class="PUNC">(</span><span class="STRN">"Ignoring plugins, loading Core only."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>237</span> 
+<span class='line'>238</span> </span><span class="WHIT">		</span><span class="COMM">// init the editor instances.</span><span class="WHIT">
+<span class='line'>239</span> </span><span class="WHIT">		</span><span class="NAME">init</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>240</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">	</span><span class="NAME">_loadPlugins</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>243</span> 
+<span class='line'>244</span> </span><span class="WHIT">		</span><span class="COMM">// load plugin configuration file.</span><span class="WHIT">
+<span class='line'>245</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">source</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ORYX.CONFIG.PLUGINS_CONFIG</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>246</span> 
+<span class='line'>247</span> </span><span class="WHIT">		</span><span class="NAME">ORYX.Log.debug</span><span class="PUNC">(</span><span class="STRN">"Loading plugin configuration from '%0'."</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">		</span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Ajax.Request</span><span class="PUNC">(</span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">			</span><span class="NAME">asynchronous</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">			</span><span class="NAME">method</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'get'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">			</span><span class="NAME">onSuccess</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">result</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>253</span> 
+<span class='line'>254</span> </span><span class="WHIT">				</span><span class="COMM">/*
+<span class='line'>255</span> 				 * This is the method that is being called when the plugin
+<span class='line'>256</span> 				 * configuration was successfully loaded from the server. The
+<span class='line'>257</span> 				 * file has to be processed and the contents need to be
+<span class='line'>258</span> 				 * considered for further plugin requireation.
+<span class='line'>259</span> 				 */</span><span class="WHIT">
+<span class='line'>260</span> </span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>261</span> </span><span class="WHIT">				</span><span class="NAME">ORYX.Log.info</span><span class="PUNC">(</span><span class="STRN">"Plugin configuration file loaded."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">				</span><span class="COMM">// get plugins.xml content</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">resultXml</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">result.responseXML</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="WHIT">				</span><span class="COMM">// TODO: Describe how properties are handled.</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">				</span><span class="COMM">// Get the globale Properties</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">globalProperties</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>269</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">preferences</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">resultXml.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">"properties"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>270</span> </span><span class="WHIT">				</span><span class="NAME">preferences.each</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>271</span> 
+<span class='line'>272</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">props</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">p.childNodes</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">					</span><span class="NAME">props.each</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prop</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">property</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Hash</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">						</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">						</span><span class="COMM">// get all attributes from the node and set to global properties</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">attributes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">prop.attributes</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>278</span> </span><span class="WHIT">						</span><span class="NAME">attributes.each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">attr</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="NAME">property</span><span class="PUNC">[</span><span class="NAME">attr.nodeName</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attr.nodeValue</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>279</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">attributes.length</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">globalProperties.push</span><span class="PUNC">(</span><span class="NAME">property</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>280</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>281</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>282</span> 
+<span class='line'>283</span> </span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">				</span><span class="COMM">// TODO Why are we using XML if we don't respect structure anyway?</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">				</span><span class="COMM">// for each plugin element in the configuration..</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">				</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">plugin</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">resultXml.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">"plugin"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">				</span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">plugin</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">each</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">node</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>289</span> </span><span class="WHIT">					</span><span class="COMM">// get all element's attributes.</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">					</span><span class="COMM">// TODO: What about: var pluginData = $H(node.attributes) !?</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pluginData</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Hash</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">					</span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">node.attributes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">each</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">attr</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>293</span> </span><span class="WHIT">						</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="NAME">attr.nodeName</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attr.nodeValue</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>294</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="WHIT">					</span><span class="COMM">// ensure there's a name attribute.</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'name'</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="WHIT">						</span><span class="NAME">ORYX.Log.error</span><span class="PUNC">(</span><span class="STRN">"A plugin is not providing a name. Ingnoring this plugin."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>300</span> 
+<span class='line'>301</span> </span><span class="WHIT">					</span><span class="COMM">// ensure there's a source attribute.</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'source'</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="WHIT">						</span><span class="NAME">ORYX.Log.error</span><span class="PUNC">(</span><span class="STRN">"Plugin with name '%0' doesn't provide a source attribute."</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'name'</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>304</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>305</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>306</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>307</span> </span><span class="WHIT">					</span><span class="COMM">// Get all private Properties</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">propertyNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">"property"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>309</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">properties</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="WHIT">					</span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">propertyNodes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">prop</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>311</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">property</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Hash</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>312</span> </span><span class="WHIT">						</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="WHIT">						</span><span class="COMM">// Get all Attributes from the Node			</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">attributes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">prop.attributes</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="WHIT">						</span><span class="NAME">attributes.each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">attr</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="NAME">property</span><span class="PUNC">[</span><span class="NAME">attr.nodeName</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">attr.nodeValue</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">				</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="NAME">attributes.length</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">properties.push</span><span class="PUNC">(</span><span class="NAME">property</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>318</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>319</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>320</span> </span><span class="WHIT">					</span><span class="COMM">// Set all Global-Properties to the Properties</span><span class="WHIT">
+<span class='line'>321</span> </span><span class="WHIT">					</span><span class="NAME">properties</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">properties.concat</span><span class="PUNC">(</span><span class="NAME">globalProperties</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="WHIT">					</span><span class="COMM">// Set Properties to Plugin-Data</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="WHIT">					</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'properties'</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">properties</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>325</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="WHIT">					</span><span class="COMM">// Get the RequieredNodes</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">requireNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">"requires"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">requires</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="WHIT">					</span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">requireNodes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">req</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">			</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">namespace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">req.attributes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">find</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">attr</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">attr.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"namespace"</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>331</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">namespace</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">namespace.nodeValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="WHIT">							</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">requires</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="WHIT">								</span><span class="NAME">requires</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">namespaces</span><span class="PUNC">:</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="WHIT">							</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">						</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="WHIT">							</span><span class="NAME">requires.namespaces.push</span><span class="PUNC">(</span><span class="NAME">namespace.nodeValue</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>337</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>338</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>340</span> </span><span class="WHIT">					</span><span class="COMM">// Set Requires to the Plugin-Data, if there is one</span><span class="WHIT">
+<span class='line'>341</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">requires</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>342</span> </span><span class="WHIT">						</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'requires'</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">requires</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>343</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>344</span> 
+<span class='line'>345</span> 
+<span class='line'>346</span> </span><span class="WHIT">					</span><span class="COMM">// Get the RequieredNodes</span><span class="WHIT">
+<span class='line'>347</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">notUsesInNodes</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">node.getElementsByTagName</span><span class="PUNC">(</span><span class="STRN">"notUsesIn"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>348</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">notUsesIn</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>349</span> </span><span class="WHIT">					</span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">notUsesInNodes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">each</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">not</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">			</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="WHIT">						</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">namespace</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$A</span><span class="PUNC">(</span><span class="NAME">not.attributes</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">find</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">attr</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">attr.name</span><span class="WHIT"> </span><span class="PUNC">==</span><span class="WHIT"> </span><span class="STRN">"namespace"</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="WHIT">						</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">namespace</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">namespace.nodeValue</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="WHIT">							</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="PUNC">!</span><span class="NAME">notUsesIn</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="WHIT">								</span><span class="NAME">notUsesIn</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">namespaces</span><span class="PUNC">:</span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>354</span> </span><span class="WHIT">							</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>355</span> </span><span class="WHIT">						</span><span class="WHIT">
+<span class='line'>356</span> </span><span class="WHIT">							</span><span class="NAME">notUsesIn.namespaces.push</span><span class="PUNC">(</span><span class="NAME">namespace.nodeValue</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>357</span> </span><span class="WHIT">						</span><span class="PUNC">}</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>358</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>359</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>360</span> </span><span class="WHIT">					</span><span class="COMM">// Set Requires to the Plugin-Data, if there is one</span><span class="WHIT">
+<span class='line'>361</span> </span><span class="WHIT">					</span><span class="KEYW">if</span><span class="PUNC">(</span><span class="WHIT"> </span><span class="NAME">notUsesIn</span><span class="WHIT"> </span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>362</span> </span><span class="WHIT">						</span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'notUsesIn'</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">notUsesIn</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>363</span> </span><span class="WHIT">					</span><span class="PUNC">}</span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>364</span> </span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="WHIT">								</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="WHIT">					</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">url</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">ORYX.PATH</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">ORYX.CONFIG.PLUGINS_FOLDER</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'source'</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">					</span><span class="NAME">ORYX.Log.debug</span><span class="PUNC">(</span><span class="STRN">"Requireing '%0'"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">url</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="WHIT">					</span><span class="COMM">// Add the Script-Tag to the Site</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="WHIT">					</span><span class="COMM">//Kickstart.require(url);</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="WHIT">					</span><span class="NAME">ORYX.Log.info</span><span class="PUNC">(</span><span class="STRN">"Plugin '%0' successfully loaded."</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pluginData</span><span class="PUNC">[</span><span class="STRN">'name'</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="WHIT">					</span><span class="COMM">// Add the Plugin-Data to all available Plugins</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="WHIT">					</span><span class="NAME">ORYX.availablePlugins.push</span><span class="PUNC">(</span><span class="NAME">pluginData</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>377</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="WHIT">				</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>379</span> </span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'>380</span> </span><span class="WHIT">			</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>381</span> </span><span class="WHIT">			</span><span class="NAME">onFailure</span><span class="PUNC">:</span><span class="NAME">this._loadPluginsOnFails</span><span class="WHIT">
+<span class='line'>382</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>383</span> 
+<span class='line'>384</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'>385</span> 
+<span class='line'>386</span> </span><span class="WHIT">	</span><span class="NAME">_loadPluginsOnFails</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">result</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>387</span> 
+<span class='line'>388</span> </span><span class="WHIT">		</span><span class="NAME">ORYX.Log.error</span><span class="PUNC">(</span><span class="STRN">"Plugin configuration file not available."</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>389</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>391</span> 
+<span class='line'>392</span> </span><span class="NAME">ORYX.Log.debug</span><span class="PUNC">(</span><span class="STRN">'Registering Oryx with Kickstart'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="NAME">Kickstart.register</span><span class="PUNC">(</span><span class="NAME">ORYX.load</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>394</span> 
+<span class='line'>395</span> </span></pre></body></html>
