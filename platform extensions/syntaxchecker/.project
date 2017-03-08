@@ -3,6 +3,13 @@
 	<name>syntaxchecker</name>
 	<comment></comment>
 	<projects>
+		<project>BPMN 2.0 XML Basic</project>
+		<project>Core Diagram API</project>
+		<project>jpdl</project>
+		<project>Signavio Core Components</project>
+		<project>Signavio Core Components - Editor</project>
+		<project>Signavio Core Components - Libs</project>
+		<project>Signavio Core Components - Platform</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

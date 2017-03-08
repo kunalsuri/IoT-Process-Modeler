@@ -14,10 +14,10 @@
 	if (!Signavio.Core) { Signavio.Core = {} };
 	Signavio.Core.Version = "1.0.0";
 			
-			Signavio.Config.EXPLORER_PATH		= '/activiti-modeler/explorer';
-			Signavio.Config.EDITOR_PATH			= '/activiti-modeler/editor';
-			Signavio.Config.BACKEND_PATH		= '/activiti-modeler/p';
-			Signavio.Config.LIBS_PATH			= '/activiti-modeler/libs';
+			Signavio.Config.EXPLORER_PATH		= '/signaviocore/explorer';
+			Signavio.Config.EDITOR_PATH			= '/signaviocore/editor';
+			Signavio.Config.BACKEND_PATH		= '/signaviocore/p';
+			Signavio.Config.LIBS_PATH			= '/signaviocore/libs';
 
 			Signavio.Config.DIAGRAMS_IMAGE_PATH = Signavio.Config.EXPLORER_PATH + "/src/img"
 			Signavio.Config.STENCILSET_EXTENSION_PATH = Signavio.Config.EDITOR_PATH + "/stencilsets/extensions/";

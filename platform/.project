@@ -3,6 +3,14 @@
 	<name>Signavio Core Components - Platform</name>
 	<comment></comment>
 	<projects>
+		<project>BPMN 2.0 XML Basic</project>
+		<project>Core Diagram API</project>
+		<project>jpdl</project>
+		<project>RemoteSystemsTempFiles</project>
+		<project>Signavio Core Components</project>
+		<project>Signavio Core Components - Editor</project>
+		<project>Signavio Core Components - Libs</project>
+		<project>syntaxchecker</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

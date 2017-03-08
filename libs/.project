@@ -3,6 +3,14 @@
 	<name>Signavio Core Components - Libs</name>
 	<comment>Libs contains Javascript libraries that are used by the Signavio Core Components clients.</comment>
 	<projects>
+		<project>BPMN 2.0 XML Basic</project>
+		<project>Core Diagram API</project>
+		<project>jpdl</project>
+		<project>RemoteSystemsTempFiles</project>
+		<project>Signavio Core Components</project>
+		<project>Signavio Core Components - Editor</project>
+		<project>Signavio Core Components - Platform</project>
+		<project>syntaxchecker</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>
